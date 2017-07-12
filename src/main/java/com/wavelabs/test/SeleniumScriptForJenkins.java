@@ -14,15 +14,21 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.testng.annotations.Test;
 
-
 public class SeleniumScriptForJenkins {
 	public static WebDriver driver = null;
 	Properties prop = new Properties();
 	static final Logger log = Logger.getLogger(SeleniumScriptForJenkins.class);
 
 	@Test
-	public void test() throws InterruptedException {
-		//System.setProperty("webdriver.chrome.driver", "D://Seleniumjars//chromedriver.exe");
+	public void readExcelSheet() throws InterruptedException {
+		driver.get("https://docs.google.com/spreadsheets/d/1i5XAc5TiHZoeJmYEiK0dpUM1MTgghz56qzLK_4i94a0/edit#gid=0");
+		Thread.sleep(30000);
+	}
+
+	@Test
+	public void testJenkins() throws InterruptedException {
+		// System.setProperty("webdriver.chrome.driver",
+		// "D://Seleniumjars//chromedriver.exe");
 		FileInputStream fileInput = null;
 		try {
 			fileInput = new FileInputStream("src/main/resources/application.properties");
@@ -34,10 +40,10 @@ public class SeleniumScriptForJenkins {
 		} catch (IOException e) {
 			log.error(e);
 		}
-		
-		System.setProperty("webdriver.chrome.driver",prop.getProperty("chromeDriverPath"));
+
+		System.setProperty("webdriver.chrome.driver", prop.getProperty("chromeDriverPath"));
 		driver = new ChromeDriver();
-		//driver.manage().window().setPosition(new Point(-2000, 0));
+		// driver.manage().window().setPosition(new Point(-2000, 0));
 		driver.get(prop.getProperty("url"));
 		driver.findElement(By.id("j_username")).sendKeys(prop.getProperty("username"));
 		driver.findElement(By.name("j_password")).sendKeys(prop.getProperty("password"));
@@ -69,7 +75,7 @@ public class SeleniumScriptForJenkins {
 				commitLinks = driver.findElements(By.xpath("//pre[@class='commitId']"));
 			}
 		} finally {
-
+			driver.quit();
 		}
 	}
 
@@ -104,7 +110,7 @@ public class SeleniumScriptForJenkins {
 				jobList = driver.findElements(By.xpath("//tr[@class=' job-status-blue']/td[3]//a"));
 			}
 		} finally {
-			// driver.quit();
+			driver.quit();
 		}
 	}
 }
